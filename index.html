@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="company directory">
+    <meta name="keywords" content="staff, management, directory, company">
+    <meta name="author" content="Miguel Alvarez">
+
+    <title>Company Directory</title>
+
+    <link href="resources/libraries/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="resources/css/styles.css">
+    <script defer src="node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+</head>
+
+<body>
+
+<section id="home">
+
+  <div class="card text-center border-warning mb-3 cardShadow">
+
+    <div class="card-header homeCardHeader">
+
+      <h1>Company Directory</h1>
+      
+
+      <div id="gridHomeHeader">
+
+        <figure>
+          <img src="resources/images/companyIcon.png" class="img-thumbnail" alt="company image">
+        </figure>
+
+        <div class="quickAccess">
+
+          <button type="button" class="btn btn btn-warning refresh"><i class="fas fa-sync-alt"></i></button>
+          
+          <button type="button" class="btn btn btn-warning"  data-bs-toggle="modal" data-bs-target="#employeeListModal">
+          <i class="fas fa-address-book"></i>
+          </button>
+
+          <button type="button" class="btn btn btn-warning"  data-bs-toggle="modal" data-bs-target="#departmentListModal">
+          <i class="fas fa-sitemap"></i>
+          </button> 
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="card-body homeCardBody">
+
+      <nav aria-label="homeNav" id="homeNav">
+
+        <ul id="homeNavList">
+
+              <ul class="readNav">
+
+                <li><a id="allEmployeesLabel" class="btn btn-warning awidth seeEmployees"><i class="fas fa-users"></i>See all employees</a></li>
+                <li><a id="departmentsLabel"class="btn btn-warning awidth seeEmployees"><i class="fas fa-building"></i>Filter by Department</a></li>
+                <li><a id="locationsLabel" class="btn btn-warning awidth seeEmployees"><i class="fas fa-street-view"></i>Filter by Location</a></li>
+
+              </ul>
+              <ul class="manageNav">
+
+                <li><a id="addRemoveEmployee" class="btn btn-warning awidth"><i class="fas fa-people-arrows"></i>Manage employees</a></li>
+                <li><a id="addRemoveDepartment" class="btn btn-warning awidth"><i class="fas fa-city"></i>Manage departments</a></li>
+                <li><a id="addRemoveLocation" class="btn btn-warning awidth"><i class="fas fa-map-marker-alt"></i>Manage locations</a></li>
+
+              </ul>
+
+        </ul>
+
+       </nav>
+
+    </div>
+
+  </div>
+
+  <div class="modal fade" id="employeeListModal" tabindex="-1" aria-labelledby="employeeModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <div class="modal-header">
+
+          <h5 class="modal-title">Employee List</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+        </div>
+
+        <div class="modal-body">
+
+          <table class="table">
+
+            <caption></caption>
+
+            <tbody id="employeeModalTable">
+              <tr>
+
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
+
+              </tr>
+              
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+
+    </div>
+    
+  </div>
+
+<div class="modal fade" id="departmentListModal" tabindex="-1" aria-labelledby="departmentModalLabel" aria-hidden="true">
+  
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Department List</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <table class="table">
+
+        <caption></caption>
+        <tbody id="departmentModalTable">
+          <tr>
+
+            <th scope="col">Department</th>
+            <th scope="col">Location</th>
+
+          </tr>
+        </tbody>
+
+        </table>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</section>
+
+<section id="allEmployeesSection">
+
+        <nav class="navbar navbar-dark bg-dark fixed-top" aria-label="allEmployeesNav">
+
+            <div class="container-fluid employeeSecNavDiv">
+
+              <div class="navButtonsDiv">
+
+                 <button class="btn btn-warning homeButton" type="button" ><i class="fas fa-home"></i></button> 
+                 <button type="button" class="btn btn btn-warning seeEmployees iconMargin"><i class="fas fa-sync-alt"></i></button>
+                 
+                 <div class="dropdown">
+
+                    <button class="btn btn-warning" type="button" id="filterDropdownEmployees" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fas fa-filter"></i>
+                    </button>
+
+                    <ul class="dropdown-menu" aria-labelledby="filterDropdownEmployees">
+
+                      <li class="dropdown-item dropdownDepartments">Department</li>
+                      <li class="dropdown-item dropdownLocation">Location</li>
+                      <li class="dropdown-item dropdownName">Name</li>
+
+                    </ul>
+
+                 </div>
+
+              </div> 
+
+              <div id="filtersDiv">
+
+                <form class="filterLoc">
+
+                  <label for="location"><span class="filterText">Filter by</span><i class="fas fa-street-view iconMarginLeft"></i></label>
+                  <select class="form-control me-2"  id="selectLocationsFilter" name="location">
+                    <option value="default" disabled selected>Select location</option>
+                  </select>
+          
+                  <button class="btn btn-warning resetFilter" type="reset">Reset</button>
+
+                </form>
+
+                <form class="filterDept">
+
+                  <label for="department"><span class="filterText">Filter by</span><i class="far fa-building iconMarginLeft"></i></label>
+            
+                  <select class="form-control me-2" id="selectDepartmentsFilter" name="department">
+                    <option value="default" disabled selected>Select department</option>
+                  </select>
+            
+                  <button class="btn btn-warning resetFilter" type="reset" >Reset</button>
+            
+                </form>
+              
+
+                <form class="filterName">
+
+                  <label for="searchInput"><i class="fas fa-search"></i></label>
+                  <input class="form-control me-2 searchEmployee searchInput" type="search" placeholder="Enter employee name" aria-label="Search">
+                  <button class="btn btn-warning reset searchInputReset" type="reset">Reset</button>
+
+                </form>
+
+              </div>
+
+            </div>
+
+        </nav>
+</section>
+
+<div id="employeeList">
+
+</div>
+
+
+<section id="manageDepartments">
+
+  <nav class="navbar navbar-dark bg-dark fixed-top" aria-label="manageDeptNav">  
+     <button type="button" class="btn btn-warning backButton"><i class="fas fa-home"></i></button>
+   </nav>
+   
+  <div class="card text-center border-warning mb-3 deptCardsStyle">
+
+    <div class="card-header cardsHeaders">
+
+      <i class="fas fa-city formIcon"></i>
+      <i class="fas fa-edit formIcon"></i>
+      <h1>Manage departments</h1>
+
+   </div>
+
+    <div class="card-body">
+
+      <nav class="navbar navbar-light widthNav" aria-label="manageDeptNav2">
+
+          <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#insertDepartmentModal"><i class="far fa-building iconMargin"></i>Add department</button>
+          <button class="btn btn-warning" type="button"  data-bs-toggle="modal" data-bs-target="#deleteDepartmentModal"><i class="fas fa-trash-alt iconMargin"></i>Delete department</button>
+          <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#updateDepartmentModal"><i class="fas fa-pen-alt iconMargin"></i>Edit department</button>
+  
+      </nav>
+
+    </div>
+
+   </div>
+
+   <div class="modal fade" id="insertDepartmentModal" tabindex="-1" aria-labelledby="insertDepartmentLabel" aria-hidden="true">
+  
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      
+      <div class="modal-content modalStyle">
+  
+        <div class="modal-body">
+  
+          <form class="container bg-light uploadForm1" action="resources/php/insertDepartment.php" method="POST" >
+
+            <fieldset>
+      
+              <legend class="legendFlex"><i class="far fa-building iconMargin"></i>Add new Department</legend>
+        
+              <label for="name" class="col-form-label">New Department Name<i class="fas fa-asterisk"></i></label>
+              <input name="name" type="text" class="form-control" placeholder="Enter new department name" required>
+        
+              <label for="locationID" class="col-form-label">New Department location<i class="fas fa-asterisk"></i></label>
+              <select class="form-select" id="selectLocationsNew" name="locationID" required>
+                <option class="" value="" disabled selected>Select your option</option>
+              </select>
+    
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-warning">Add</button>
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+              </div>
+            </fieldset>
+      
+           </form>
+
+        </div>
+  
+      </div>
+  
+    </div>
+  
+  </div>
+
+
+  <div class="modal fade" id="deleteDepartmentModal" tabindex="-1" aria-labelledby="deleteDepartmentLabel" aria-hidden="true">
+  
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      
+      <div class="modal-content modalStyle">
+  
+        <div class="modal-body">
+
+          <form class="container bg-light deleteDepartmentForm"  action="resources/php/deleteEmptyDepartment.php" method="POST">
+
+            <fieldset>
+        
+                 <legend class="legendFlex"><i class="fas fa-trash-alt iconMargin"></i>Delete Department</legend>
+        
+              <label for="id" class="col-form-label">Department to be deleted<i class="fas fa-asterisk"></i></label>
+              <select class="form-select submit" id="selectDepartmentsDelete" name="id" required>
+                <option value="" disabled selected>Select your option</option>
+              </select>
+    
+       
+  
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-warning">Delete</button>
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+              </div>
+
+             </fieldset>
+        
+          </form>
+
+        </div>
+  
+      </div>
+  
+    </div>
+  
+  </div>
+  
+
+  <div class="modal fade" id="updateDepartmentModal" tabindex="-1" aria-labelledby="updateDepartmentLabel" aria-hidden="true">
+  
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      
+      <div class="modal-content modalStyle">
+  
+        <div class="modal-body">
+
+          <form class="container bg-light uploadForm2" action="resources/php/updateDepartment.php" method="POST">
+
+            <fieldset>
+        
+              <legend class="legendFlex" ><i class="fas fa-pen-alt iconMargin"></i>Edit Department</legend>
+        
+            <label for="name">Current Name<i class="fas fa-asterisk"></i></label>
+            <label id="selectDeptLoc">Selected department location:  <span id="currentLocation"></span></label>
+            <select class="form-select" id="selectDepartmentsUpdate" name="prename" required>
+              <option value="" disabled selected>Select your option</option>
+            </select>
+        
+            <label for="name">Edit Name</label>
+            <input id="editDepartmentName" name="newName" type="text" class="form-control" placeholder="Enter department name">      
+        
+            <label for="locationID">Edit Location<i class="fas fa-asterisk"></i></label>
+            <select class="form-select" id="selectLocationsMove" name="locationID" required>
+              <option value="" disabled selected>Select your option</option>
+            </select>
+  
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-warning">Save Changes</button>
+              <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+            </div>
+
+           </fieldset>
+
+          </form>
+
+       </div>
+    
+      </div>
+  
+    </div>
+  
+  </div>
+ 
+
+
+  </section>
+
+
+  <section id="manageEmployees">
+
+    <nav class="navbar navbar-dark bg-dark fixed-top" aria-label="manageEmployeesNav">  
+      <button type="button" class="btn btn-warning backButton"><i class="fas fa-home"></i></button>
+    </nav>
+ 
+    <div class="card text-center border-warning mb-3 deptCardsStyle">
+
+      <div class="card-header cardsHeaders">
+
+        <i class="fas fa-people-arrows formIcon"></i>
+        <i class="fas fa-edit formIcon"></i>
+        <h1>Manage Employees</h1>
+
+      </div>
+      <div class="card-body">
+        
+        <nav class="navbar navbar-light widthNav" aria-label="addEmployeeNav">
+
+            <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#insertEmployeeModal"><i class="fas fa-user-plus iconMargin"></i>Add employee</button>
+            <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#deleteEmployeeModal"><i class="fas fa-user-slash iconMargin"></i>Delete employee</button>
+            <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#updateEmployeeModal"><i class="fas fa-user-edit iconMargin"></i>Edit employee</button>
+            
+        </nav>
+
+      </div>
+
+    </div>
+  
+
+    <div class="modal fade" id="insertEmployeeModal" tabindex="-1" aria-labelledby="insertEmployeeLabel" aria-hidden="true">
+  
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        
+        <div class="modal-content modalStyle">
+    
+          <div class="modal-body">
+  
+            <form class="container bg-light uploadForm3" action="resources/php/insertEmployee.php" method="POST">
+        
+              <fieldset>
+        
+                  <legend class="legendFlex"><i class="fas fa-user-plus iconMargin"></i>Add Employee</legend>
+        
+                <label for="firstName" class="col-form-label">First Name<i class="fas fa-asterisk"></i></label>
+                <input name="firstName" type="text" class="form-control required" placeholder="Enter first Name" required>
+        
+                <label for="lastName" class="form-label">Last Name<i class="fas fa-asterisk"></i></label>
+                <input name="lastName" type="text" class="form-control required" placeholder="Enter last Name" required>
+        
+                <label for="jobTitle" class="col-form-label">Job Title</label>
+                <input name="jobTitle" type="text" placeholder="Enter Job Title" class="form-control">
+        
+                <label for="email" class="form-label">e-mail<i class="fas fa-asterisk"></i></label>
+                <input name="email" type="email" class="form-control required" placeholder="Enter e-mail"required>
+        
+                <label for="departmentID" class="col-form-label">Department<i class="fas fa-asterisk"></i></label>
+                <select class="form-select required" id="selectDeptNewEmployee" name="departmentID" required>
+                  <option value="" disabled selected>Select your option</option>
+                </select>
+    
+  
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-warning">Add employee</button>
+                  <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                </div>
+                
+              </fieldset>
+          
+            </form>
+
+              </div>
+   
+          </div>
+      
+        </div>
+    
+      </div>
+    
+  
+
+    <div class="modal fade" id="deleteEmployeeModal" tabindex="-1" aria-labelledby="deleteEmployeeLabel" aria-hidden="true">
+  
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        
+        <div class="modal-content modalStyle">
+    
+          <div class="modal-body">
+  
+            <form class="container bg-light uploadForm4" action="resources/php/deleteEmployee.php" method="POST"  >
+
+              <fieldset>
+        
+                  <legend class="legendFlex"><i class="fas fa-user-slash iconMargin"></i>Delete Employee</legend>
+
+          
+                <label for="firstName" class="form-label">First Name<i class="fas fa-asterisk"></i></label>
+                <select class="form-select" id="selectfName" name="firstName" required>
+                  <option value="" disabled selected>Select your option</option>
+                </select>
+          
+                <label for="lastName" class="form-label">Last Name<i class="fas fa-asterisk"></i></label>
+                <select class="form-select" id="selectlName" name="lastName" disabled required>
+                  <option value="" disabled selected>Select your option</option>
+                </select>
+
+                <label for="departmentID" class="col-form-label">Department<i class="fas fa-asterisk"></i></label>
+                <select class="form-select required" id="selectDeptDeleteEmployee" name="departmentID" required>
+                  <option value="" disabled selected>Select your option</option>
+                </select>
+
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-warning">Delete</button>
+                  <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                </div>
+    
+             </fieldset>
+          
+            </form>
+  
+          </div>
+      
+        </div>
+    
+      </div>
+    
+    </div>
+
+    <div class="modal fade" id="updateEmployeeModal" tabindex="-1" aria-labelledby="updateEmployeeLabel" aria-hidden="true">
+  
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        
+        <div class="modal-content modalStyle">
+    
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Employee Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+    
+          <div class="modal-body">
+  
+           <p>To edit employee details go to <button id="sendToAllEmployees" class="btn btn-warning" type="button">All Employees</button> and press <span>Edit details</span>
+          for the employee you want to edit</p>
+  
+          </div>
+
+          <div class="modal-footer">
+            <button id="closeUpdateModal" type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+          </div>
+      
+        </div>
+    
+      </div>
+    
+    </div>
+
+
+</section>
+
+
+<section id="manageLocations">
+
+    <nav class="navbar navbar-dark bg-dark fixed-top" aria-label="manageLocactionsNav">  
+      <button type="button" class="btn btn-warning backButton"><i class="fas fa-home"></i></button>
+    </nav>
+
+    <div class="card text-center border-warning mb-3 deptCardsStyle">
+
+      <div class="card-header cardsHeaders">
+
+        <i class="fas fa-map-marker-alt formIcon"></i>
+        <i class="fas fa-edit formIcon"></i>
+        <h1>Manage Locations</h1>
+
+      </div>
+
+      <div class="card-body">
+
+        <nav class="navbar navbar-light widthNav" aria-label="updateNavBar">
+
+          <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#insertLocationModal"><i class="fas fa-map-marked-alt iconMargin"></i>Add location</button>
+          <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#deleteLocationModal"><i class="fas fa-trash-alt iconMargin"></i>Delete location</button>
+          <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#updateLocationModal"><i class="fas fa-pen-alt iconMargin"></i>Edit location</button>
+        
+        </nav>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal fade" id="insertLocationModal" tabindex="-1" aria-labelledby="insertLocationLabel" aria-hidden="true">
+  
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        
+        <div class="modal-content modalStyle">
+    
+          <div class="modal-body">
+  
+            <form class="container bg-light uploadForm5" action="resources/php/insertLocation.php" method="POST">
+
+              <fieldset>
+        
+                  <legend class="legendFlex" ><i class="fas fa-map-marked-alt iconMargin"></i>Add new Location</legend>
+        
+                <label for="name" class="col-form-label">New location name<i class="fas fa-asterisk"></i></label>
+                <input name="name" type="text" class="form-control" placeholder="Enter new location name" required>
+
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-warning">Add</button>
+                  <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                </div>
+    
+             </fieldset>
+          
+            </form>
+  
+          </div>
+      
+        </div>
+    
+      </div>
+    
+    </div>
+
+
+    <div class="modal fade" id="deleteLocationModal" tabindex="-1" aria-labelledby="deleteLocationLabel" aria-hidden="true">
+  
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        
+        <div class="modal-content modalStyle">
+    
+          <div class="modal-body">
+
+              <form  class="container bg-light deleteLocationForm" action="resources/php/deleteEmptyLocation.php" method="POST">
+
+                <fieldset>
+          
+                    <legend class="legendFlex" ><i class="fas fa-trash-alt iconMargin"></i>Delete Location</legend>
+            
+                  <label for="id" class="form-label">Location to be deleted<i class="fas fa-asterisk"></i></label>
+                  <select class="form-select" id="selectLocationsDelete" name="id" required>
+                    <option value="" disabled selected>Select your option</option>
+                  </select>
+            
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-warning" >Delete</button>
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                  </div>
+    
+                 </fieldset>
+
+              </form>
+  
+          </div>
+      
+        </div>
+    
+      </div>
+    
+    </div>
+   
+    <div class="modal fade" id="updateLocationModal" tabindex="-1" aria-labelledby="updateLocationLabel" aria-hidden="true">
+  
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        
+        <div class="modal-content modalStyle">
+    
+          <div class="modal-body">
+
+            <form class="container bg-light uploadForm6" action="resources/php/updateLocation.php" method="POST">
+
+              <fieldset>
+          
+                  <legend class="legendFlex"  ><i class="fas fa-pen-alt iconMargin"></i>Edit Location</legend>
+          
+                <label for="id">Current location name<i class="fas fa-asterisk"></i></label>   
+                <select class="form-select" id="selectLocationsUpdate" name="id" required>
+                  <option value="" disabled selected>Select your option</option>
+                </select>
+          
+                <label for="name">Edit name<i class="fas fa-asterisk"></i></label>
+                <input id="editLocationName" name="name" type="text" class="form-control" placeholder="Enter location name" required>
+    
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-warning" >Save Changes</button>
+                  <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                </div>
+    
+              </fieldset>
+
+            </form>
+  
+          </div>
+      
+        </div>
+    
+      </div>
+    
+    </div>
+
+</section>
+
+<!--Modal messages -->
+
+  <button style="display: none;" class="btn btn-warning saveModal" type="button" data-bs-toggle="modal" data-bs-target="#saveModal"></button>
+
+  <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+
+    <div class="modal-content modalStyle">
+
+      <div class="modal-header">
+        <h5 class="modal-title saveTitle"><i class="far fa-check-circle"></i>Are you sure you wish to continue?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+    <div class="modal-body">
+
+      <button type="button" class="confirm btn btn-warning">Save changes</button>
+      <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
+
+    </div>
+
+    </div>
+
+    </div>
+
+  </div>
+
+  <button style="display: none;" class="btn btn-warning errorModalDept" type="button" data-bs-toggle="modal" data-bs-target="#errorModalDept"></button>
+
+  <div class="modal fade" id="errorModalDept" tabindex="-1" aria-labelledby="errorModalDeptLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+  
+      <div class="modal-content modalStyle">
+  
+        <div class="modal-header">
+          <h5 class="modal-title errorTitle"><i class="far fa-times-circle"></i>Invalid department </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+  
+        <div class="modal-body">
+          <p>The selected department has employees assigned to it.</p>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
+        </div>
+  
+    </div>
+  
+    </div>
+  
+  </div>
+
+  <button style="display: none;" class="btn btn-warning errorModalLoc" type="button" data-bs-toggle="modal" data-bs-target="#errorModalLoc"></button>
+
+  <div class="modal fade" id="errorModalLoc" tabindex="-1" aria-labelledby="errorModalLocLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+  
+      <div class="modal-content modalStyle">
+  
+        <div class="modal-header">
+          <h5 class="modal-title errorTitle"><i class="far fa-times-circle"></i>Invalid location </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+  
+        <div class="modal-body">
+          <p>The selected location has departments assigned to it.</p>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
+        </div>
+  
+    </div>
+  
+    </div>
+  
+  </div>
+
+  <div id="emptyMessage" class="container-fluid bg-light filterStyle">
+    <h1>No results for current search</h1>
+    <p>Please press reset try again</p>
+  </div>
+  
+<div id="preloader"></div>
+<div id="loader"></div>
+
+<script src="resources/libraries/jquery-3.5.1.min.js"></script>
+<script src="resources/libraries/bootstrap.bundle.min.js"></script>
+<script src="resources/js/app.js"></script>
+
+</body>
+
+</html>
