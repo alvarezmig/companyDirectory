@@ -11,6 +11,8 @@ $(window).on('load', function () {
 //DOCUMENT READY FUNCTION
 $(document).ready(function() {
 
+  
+//======= AJAX - CONNECTS TO DATABASE VIA PHP AND POPULATE SELECT MENUS WITH DATA =======
 
   $.ajax({
     type: 'POST',
@@ -141,7 +143,8 @@ $.ajax({
     }
   })
 
-
+  
+  //======= SHOWS ALL EMPLOYEES DATA WITH LATEST UPDATE INFO =======
 
   $('.seeEmployees').click(function () {
 
@@ -415,6 +418,8 @@ $.ajax({
  allInfo();
 })
   
+  //======= AJAX - CONNECTS TO DATABASE VIA PHP AND POPULATE SELECT MENUS WITH EMPTY DEPARTMENTS DATA =======
+
     $.ajax({
       type: 'POST',
       dataType: 'JSON',
@@ -449,7 +454,9 @@ $.ajax({
         alert('Error retrieving information');
     }
   })
+  
 
+  //======= AJAX - CONNECTS TO DATABASE VIA PHP AND POPULATE SELECT MENUS WITH EMPTY LOCATIONS DATA =======
 
   $.ajax({
     type: 'POST',
@@ -481,6 +488,9 @@ $.ajax({
       alert('Error retrieving information');
   }
 })
+
+  
+//======= EMPLOYEE LIST - QUICK ACCESS FUNCTIONALITY =======
 
 $('[data-bs-target="#employeeListModal"]').click(function () {
 
@@ -515,6 +525,8 @@ $('[data-bs-target="#employeeListModal"]').click(function () {
   }
  })
 }) 
+
+//======= DEPARTMENT/LOCATION LIST - QUICK ACCESS FUNCTIONALITY =======
 
 $('[data-bs-target="#departmentListModal"]').click(function () {
 
@@ -586,6 +598,7 @@ error: function(){
 })
 
 
+//======= SHOWS CURRENT LOCATION FOR SELECTED DEPARTMENT =======
 
 $('#selectDepartmentsUpdate').change(function (){
   $.ajax({
@@ -594,7 +607,6 @@ $('#selectDepartmentsUpdate').change(function (){
     cache: false,
     url: 'resources/php/getAllLocations.php',
     success: function(locations) {
-        console.log("hola")
         $.each(locations.data, function(i){
             if($("#selectDepartmentsUpdate option:selected").val()[0] === locations.data[i].id){
               $("#currentLocation").text(locations.data[i].name)
@@ -606,6 +618,8 @@ $('#selectDepartmentsUpdate').change(function (){
   }
 })
 })
+
+//======= NAV BAR AND DIFFERENT SECTIONS FUNCTIONALITY =======
 
 $('#allEmployeesLabel').click(function () {
 
